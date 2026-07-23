@@ -32,7 +32,7 @@ case "${TASK_ID}" in
   4)
     VLM_CKPT="/data/user/hlei573/vla_memory_experiments/english_ref_vlm26/drawer_success20_reval_20260630/task4/vlm_eval_ready/task4_20260630_160758/dropo3_ckpt1000_topagain_f50_stagegate_success20_retry2_ckpt1000"
     MAX_STEPS=2000
-    REPLAN_STEPS=5
+    REPLAN_STEPS=10
     PASSAGE="${ROOT}/config/drawer_passage_counts_task4_openmiddle1_20260627.json"
     TOL_FILE="${ROOT}/config/task4_success20_tol_overrides.json"
     DRAWER_CLOSE=0.002

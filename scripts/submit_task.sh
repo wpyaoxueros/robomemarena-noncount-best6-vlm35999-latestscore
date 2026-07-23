@@ -9,7 +9,7 @@ STAMP="$(date +%Y%m%d_%H%M%S)"
 SESSION="nc6_t${TASK_ID}_${STAMP}"
 JOB="nc6_t${TASK_ID}_${STAMP}"
 LOG="${ROOT}/logs/${SESSION}.log"
-PORT="$((9400 + TASK_ID))"
+PORT="${PORT_OVERRIDE:-$((9400 + TASK_ID))}"
 EXCLUDE_ARG=""
 if [[ -n "${SLURM_EXCLUDE:-}" ]]; then
   EXCLUDE_ARG="--exclude=${SLURM_EXCLUDE}"

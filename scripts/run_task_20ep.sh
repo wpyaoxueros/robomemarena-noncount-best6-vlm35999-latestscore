@@ -37,6 +37,10 @@ case "${TASK_ID}" in
     PASSAGE="${ROOT}/config/drawer_passage_counts_task4_openmiddle1_20260627.json"
     TOL_FILE="${ROOT}/config/task4_success20_tol_overrides.json"
     EVAL_PY_OVERRIDE="${ROOT}/evaluators/eval_tasks2_26_sync_endpose_hold_task4_originalrollout_officialscore.py"
+    # The historical success20 trace released close-top before its drawer-stage
+    # predicate was true. Current base evaluator blocks that handoff unless
+    # this compatibility switch is explicitly disabled for the A/B replay.
+    DRAWER_GUARD="${TASK4_DRAWER_FORWARD_ADVANCE_GUARD:-1}"
     DRAWER_CLOSE=0.002
     DRAWER_DEBUG=10
     ;;

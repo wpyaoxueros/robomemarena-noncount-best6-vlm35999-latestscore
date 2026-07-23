@@ -34,6 +34,7 @@ case "${TASK_ID}" in
     MAX_STEPS=2000
     REPLAN_STEPS=5
     PASSAGE="${ROOT}/config/drawer_passage_counts_task4_openmiddle1_20260627.json"
+    TOL_FILE="${ROOT}/config/task4_success20_tol_overrides.json"
     DRAWER_CLOSE=0.002
     DRAWER_DEBUG=10
     ;;

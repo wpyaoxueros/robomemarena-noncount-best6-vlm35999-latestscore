@@ -1,0 +1,375 @@
+{
+  "episodes": [
+    {
+      "task_id": 11,
+      "ep": 0,
+      "seed": 104,
+      "score_pct": 80.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": true,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep0/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 1,
+      "seed": 105,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep1/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 2,
+      "seed": 106,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep2/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 3,
+      "seed": 107,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep3/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 4,
+      "seed": 108,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep4/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 5,
+      "seed": 109,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep5/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 6,
+      "seed": 110,
+      "score_pct": 0.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": false,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep6/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 7,
+      "seed": 111,
+      "score_pct": 0.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": false,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep7/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 8,
+      "seed": 112,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep8/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 9,
+      "seed": 113,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep9/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 10,
+      "seed": 114,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep10/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 11,
+      "seed": 115,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep11/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 12,
+      "seed": 116,
+      "score_pct": 0.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": false,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep12/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 13,
+      "seed": 117,
+      "score_pct": 0.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": false,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep13/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 14,
+      "seed": 118,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep14/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 15,
+      "seed": 119,
+      "score_pct": 20.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": false,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep15/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 16,
+      "seed": 120,
+      "score_pct": 40.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep16/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 17,
+      "seed": 121,
+      "score_pct": 40.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": false,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep17/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 18,
+      "seed": 122,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep18/sync_vlm.log"
+    },
+    {
+      "task_id": 11,
+      "ep": 19,
+      "seed": 123,
+      "score_pct": 60.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Top_Drawer": true,
+        "02_Place_Cookies_Top_Drawer": true,
+        "03_Close_Top_Drawer": true,
+        "04_Open_Middle_Drawer": false,
+        "05_Place_Butter_Middle_Drawer": false,
+        "06_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task11/task11_vlm35999_latestd9_20ep_seed104_20260723_204528/task11/ep19/sync_vlm.log"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": 11,
+      "num_trials": 20,
+      "seed_start": 104,
+      "average_score_pct": 33.0,
+      "tsr_success_rate_pct": 0.0,
+      "stage_success_rate_pct": 0.0,
+      "goal_success_rate_pct": 0.0
+    }
+  ]
+}

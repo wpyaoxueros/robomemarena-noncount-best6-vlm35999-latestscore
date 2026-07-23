@@ -307,6 +307,7 @@ class HoldConfig:
     passage_counts_json: Path | None
     drawer_forward_advance_guard: bool
     drawer_require_stage_and_target: bool
+    drawer_close_require_stage: bool
     drawer_open_stage_thresh: float
     drawer_close_stage_thresh: float
     drawer_stage_debug_interval: int
@@ -389,6 +390,7 @@ def hold_config() -> HoldConfig:
         passage_counts_json=Path(passage_counts_raw) if passage_counts_raw else Path(DEFAULT_PASSAGE_COUNTS_JSON),
         drawer_forward_advance_guard=env_bool("DRAWER_FORWARD_ADVANCE_GUARD", True),
         drawer_require_stage_and_target=env_bool("DRAWER_REQUIRE_STAGE_AND_TARGET", False),
+        drawer_close_require_stage=env_bool("DRAWER_CLOSE_REQUIRE_STAGE", True),
         drawer_open_stage_thresh=env_float("DRAWER_OPEN_STAGE_THRESH", 0.10),
         drawer_close_stage_thresh=env_float("DRAWER_CLOSE_STAGE_THRESH", 0.08),
         drawer_stage_debug_interval=int(os.environ.get("DRAWER_STAGE_DEBUG_INTERVAL", "0")),
@@ -1537,7 +1539,7 @@ def run_episode_sync_endpose_hold(
         required_segments = required_target_passage_segments(subtask)
         return_gate_ok = target_passage_gate_allows_count(subtask)
         near_ok = dist <= pos_tol
-        close_requires_stage = is_close_drawer_status(drawer_status)
+        close_requires_stage = cfg.drawer_close_require_stage and is_close_drawer_status(drawer_status)
         open_requires_stage_and_target = requires_drawer_stage_and_target(subtask)
         # For drawer subtasks whose training trajectory enters the target range
         # multiple times, the user requirement is explicit: eval must also wait
@@ -1695,7 +1697,7 @@ def run_episode_sync_endpose_hold(
         return_gate_ok = target_passage_gate_allows_count(subtask)
         drawer_stage_ok, drawer_status = drawer_stage_gate_status(subtask)
         stage_required_ok, stage_required_reason = endpose_stage_done_required_ok(subtask)
-        close_requires_stage = is_close_drawer_status(drawer_status)
+        close_requires_stage = cfg.drawer_close_require_stage and is_close_drawer_status(drawer_status)
         open_requires_stage_and_target = requires_drawer_stage_and_target(subtask)
         drawer_target_ok = (
             return_gate_ok and (dist <= pos_tol) and drawer_stage_ok
@@ -2221,7 +2223,7 @@ def run_episode_sync_endpose_hold(
         "consecutive=%s post_hold_release_vla_steps=%s strict_hold_release_next=%s prevent_regression=%s "
         "guard_after_hold=%s regression_guard_mode=%s disable_output_normalize=%s "
         "vlm_task_text_mode=%s drawer_open_return_hold=%s drawer_open_return_away_dist=%.5f "
-        "drawer_forward_advance_guard=%s drawer_require_stage_and_target=%s "
+        "drawer_forward_advance_guard=%s drawer_require_stage_and_target=%s drawer_close_require_stage=%s "
         "drawer_open_stage_thresh=%.5f drawer_close_stage_thresh=%.5f "
         "drawer_stage_debug_interval=%s "
         "subtask_forward_max_advance=%s microwave_require_open_hold_release=%s "
@@ -2257,6 +2259,7 @@ def run_episode_sync_endpose_hold(
         cfg.drawer_open_return_away_dist,
         cfg.drawer_forward_advance_guard,
         cfg.drawer_require_stage_and_target,
+        cfg.drawer_close_require_stage,
         cfg.drawer_open_stage_thresh,
         cfg.drawer_close_stage_thresh,
         cfg.drawer_stage_debug_interval,

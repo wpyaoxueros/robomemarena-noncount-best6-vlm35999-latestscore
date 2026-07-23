@@ -1,0 +1,2 @@
+task_id	num_trials	seed_start	average_score_pct	tsr_success_rate_pct	stage_success_rate_pct	goal_success_rate_pct
+17	20	104	56.7	0.0	0.0	0.0

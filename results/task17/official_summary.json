@@ -1,0 +1,335 @@
+{
+  "episodes": [
+    {
+      "task_id": 17,
+      "ep": 0,
+      "seed": 104,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep0/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 1,
+      "seed": 105,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep1/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 2,
+      "seed": 106,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep2/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 3,
+      "seed": 107,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep3/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 4,
+      "seed": 108,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep4/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 5,
+      "seed": 109,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep5/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 6,
+      "seed": 110,
+      "score_pct": 33.333333,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": false,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep6/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 7,
+      "seed": 111,
+      "score_pct": 33.333333,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": false,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep7/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 8,
+      "seed": 112,
+      "score_pct": 0.0,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": false,
+        "02_Place_Butter_Middle_Drawer": false,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep8/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 9,
+      "seed": 113,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep9/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 10,
+      "seed": 114,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep10/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 11,
+      "seed": 115,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep11/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 12,
+      "seed": 116,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep12/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 13,
+      "seed": 117,
+      "score_pct": 33.333333,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": false,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep13/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 14,
+      "seed": 118,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep14/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 15,
+      "seed": 119,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep15/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 16,
+      "seed": 120,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep16/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 17,
+      "seed": 121,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep17/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 18,
+      "seed": 122,
+      "score_pct": 33.333333,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": false,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep18/sync_vlm.log"
+    },
+    {
+      "task_id": 17,
+      "ep": 19,
+      "seed": 123,
+      "score_pct": 66.666667,
+      "tsr_success": false,
+      "stage_success": false,
+      "goal_success": false,
+      "stage_done": {
+        "01_Open_Middle_Drawer": true,
+        "02_Place_Butter_Middle_Drawer": true,
+        "03_Place_Chocolate_Middle_Drawer": false,
+        "04_Close_Middle_Drawer": false
+      },
+      "log": "/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task17/task17_vlm35999_latestd9_20ep_seed104_20260723_204541/task17/ep19/sync_vlm.log"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": 17,
+      "num_trials": 20,
+      "seed_start": 104,
+      "average_score_pct": 56.66666685,
+      "tsr_success_rate_pct": 0.0,
+      "stage_success_rate_pct": 0.0,
+      "goal_success_rate_pct": 0.0
+    }
+  ]
+}

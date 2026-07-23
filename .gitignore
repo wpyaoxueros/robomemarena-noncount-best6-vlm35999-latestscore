@@ -1,0 +1,9 @@
+logs/
+outputs/
+official_remote.incomplete_*/
+official_snapshot/evaluation_benchmark/libero_fork/
+official_snapshot/evaluation_benchmark/scripts/__pycache__/
+**/__pycache__/
+*.pyc
+core
+core.*

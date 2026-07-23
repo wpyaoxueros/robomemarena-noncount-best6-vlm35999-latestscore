@@ -1,0 +1,4 @@
+task_id	attempt	job_id	state	score_pct	stage_success	goal_success	output_path	note
+4	1	432761	completed	0.0	N	N	/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task4/task4_vlm35999_latestd9_20ep_seed104_20260723_202255	Latest d9 scorer emitted all nine Task4 stages false.
+19	1	432762	failed	NA	NA	NA	/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task19/task19_vlm35999_latestd9_20ep_seed104_20260723_202255	SIGABRT at about t=269 before scoring.
+19	2	432830	completed	0.0	N	N	/data/user/hlei573/vla_memory_experiments/repro_eval_packs/noncount_best6_latestscore_20ep_20260723/outputs/task19/task19_vlm35999_latestd9_20ep_seed104_20260723_204544	Retry completed; all three Task19 stages false.

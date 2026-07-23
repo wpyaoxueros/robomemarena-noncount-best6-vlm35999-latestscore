@@ -12,6 +12,7 @@ VLA_POLICY="/data/user/hlei573/openpi/checkpoints/pi05_libero_robomemarena_fullv
 VLA_REPO_ID="/data/user/hlei573/.cache/huggingface/lerobot/lhs/robomemarena_fullvlm_v2_noflip_dataset_v2"
 TARGETS="${ROOT}/config/tasks2_26_endpose_targets_seed100_199.json"
 DRAWER_PASSAGE="${ROOT}/config/drawer_passage_counts_task4full_plus_alltasks_20260627.json"
+EVAL_PY_OVERRIDE=""
 
 MAX_STEPS=2200
 REPLAN_STEPS=10
@@ -35,6 +36,7 @@ case "${TASK_ID}" in
     REPLAN_STEPS=10
     PASSAGE="${ROOT}/config/drawer_passage_counts_task4_openmiddle1_20260627.json"
     TOL_FILE="${ROOT}/config/task4_success20_tol_overrides.json"
+    EVAL_PY_OVERRIDE="${ROOT}/evaluators/eval_tasks2_26_sync_endpose_hold_task4_originalrollout_officialscore.py"
     DRAWER_CLOSE=0.002
     DRAWER_DEBUG=10
     ;;
@@ -89,7 +91,7 @@ RUN_ID="task${TASK_ID}_vlm35999_latestd9_20ep_seed${SEED}_${STAMP}"
 OUT_ROOT="${ROOT}/outputs/task${TASK_ID}/${RUN_ID}"
 mkdir -p "${OUT_ROOT}/logs"
 
-export EVAL_PY="${ROOT}/evaluators/eval_tasks2_26_sync_endpose_hold_officialscore.py"
+export EVAL_PY="${EVAL_PY_OVERRIDE:-${ROOT}/evaluators/eval_tasks2_26_sync_endpose_hold_officialscore.py}"
 export TASKS2_26_BASE_EVAL_PY="/data/user/hlei573/tmp/rma_refeval_fresh_20260513_052445/RoboMemArena/evaluation_benchmark/reference_evaluation/tasks2_26_vlm5_reference/eval_tasks2_26_vlm_vla.py"
 export ROBOMEMARENA_OFFICIAL_SCRIPTS_DIR="${ROOT}/official_snapshot/evaluation_benchmark/scripts"
 export TARGET_LIBERO_PATH="${ROOT}/official_snapshot/evaluation_benchmark/libero_fork"

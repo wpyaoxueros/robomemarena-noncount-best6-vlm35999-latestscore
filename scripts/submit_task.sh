@@ -14,9 +14,13 @@ EXCLUDE_ARG=""
 if [[ -n "${SLURM_EXCLUDE:-}" ]]; then
   EXCLUDE_ARG="--exclude=${SLURM_EXCLUDE}"
 fi
+NODELIST_ARG=""
+if [[ -n "${SLURM_NODELIST:-}" ]]; then
+  NODELIST_ARG="--nodelist=${SLURM_NODELIST}"
+fi
 
 tmux new-session -d -s "${SESSION}" \
-  "bash -lc 'srun -p acd_u --gres=gpu:2 -c 16 --mem=245760M ${EXCLUDE_ARG} --job-name=${JOB} bash -lc \"${ROOT}/scripts/run_task_20ep.sh ${TASK_ID} ${NUM_TRIALS} ${SEED} ${PORT}\" 2>&1 | tee -a ${LOG}'"
+  "bash -lc 'srun -p acd_u --gres=gpu:2 -c 16 --mem=245760M ${EXCLUDE_ARG} ${NODELIST_ARG} --job-name=${JOB} bash -lc \"${ROOT}/scripts/run_task_20ep.sh ${TASK_ID} ${NUM_TRIALS} ${SEED} ${PORT}\" 2>&1 | tee -a ${LOG}'"
 
 echo "${SESSION}" | tee "${ROOT}/logs/task${TASK_ID}.session"
 echo "${LOG}" | tee "${ROOT}/logs/task${TASK_ID}.launcher_log"

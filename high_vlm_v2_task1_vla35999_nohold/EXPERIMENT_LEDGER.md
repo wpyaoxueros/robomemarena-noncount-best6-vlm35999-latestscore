@@ -31,3 +31,13 @@
 - Root cause: the static audit unnecessarily depended on a user-local search utility.
 - Correction: use portable `grep -E/-F` checks for the same forbidden and required strings.
 - Required next validation: rerun the complete static gate from the `hzhang061` shell.
+
+### Formal request task1_seed104_nohold_20260824_010402
+
+- Status: `REQUESTED_NOT_ALLOCATED`
+- Unix user: `hzhang061`
+- Required gates: fresh 1-GPU probe and fresh 2-GPU request-shape probe from the same borrowed-account shell.
+- Formal shape: one node, two GPUs, 16 CPU cores, 160 GiB RAM, maximum 8 hours.
+- Queue escalation: `acd_u`, then `acd_ue`, then `emergency_acd`, each with a 20-second immediate-allocation gate.
+- Rollout: Task1, seed104, one episode, direct VLM prompt to VLA action path with no hold/release/anchor/oracle/GT replay.
+- Result: pending.

@@ -17,3 +17,17 @@
 - Root cause: `high_vlm_v2_components.py` imports two local training support modules at module import time, even though the evaluation path does not call their training classes. The initial source inventory copied the evaluator but not that complete import closure.
 - Correction: copied `primitive_weighted_loss.py` and `training_components.py` unchanged from the read-only source tree.
 - Verification: 18-file SHA-256 manifest passes, every copied file matches its original via `cmp`, the no-hold audit passes, and the copied CLI help is emitted successfully.
+
+### Shared output preflight
+
+- Initial failure: `hzhang061` could read both copied runtime assets but `test -w records/` failed.
+- Root cause: `records/` inherited the creating shell's `umask 022`, producing mode `2755`; setgid preserved `irpn` ownership but did not itself grant group write.
+- Correction: `scripts/prepare_shared_permissions.sh` applies `2775` only to generated-data directories in this experiment and `g+rw` to their existing generated files.
+- Required next validation: a write test from the `hzhang061` login shell followed by the mandated compute-node write probe.
+
+### Borrowed-shell audit portability
+
+- Failure: after copied-asset read checks and shared-directory write checks passed, `audit_nohold_contract.sh` exited `127` because `rg` is not installed in the `hzhang061` login environment.
+- Root cause: the static audit unnecessarily depended on a user-local search utility.
+- Correction: use portable `grep -E/-F` checks for the same forbidden and required strings.
+- Required next validation: rerun the complete static gate from the `hzhang061` shell.

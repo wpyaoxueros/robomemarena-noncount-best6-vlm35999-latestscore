@@ -19,6 +19,11 @@ if [[ "$(whoami)" != "hzhang061" ]]; then
   exit 1
 fi
 
+if [[ ! -w "${EXP_ROOT}/records" || ! -w "${EXP_ROOT}/runs" ]]; then
+  echo "shared experiment outputs are not writable by $(whoami); run prepare_shared_permissions.sh as the owner" >&2
+  exit 1
+fi
+
 mkdir -p "${LAUNCH_LOG_DIR}" "${PROBE_DIR}"
 exec > >(tee -a "${LAUNCH_LOG}") 2>&1
 

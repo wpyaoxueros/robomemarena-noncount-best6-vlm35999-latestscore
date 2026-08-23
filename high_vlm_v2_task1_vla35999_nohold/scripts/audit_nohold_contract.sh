@@ -14,22 +14,21 @@ for forbidden in \
   'REQUIRE_FORWARD' \
   'hold_steps' \
   'auto_release'; do
-  if rg -n "${forbidden}" "${EVALUATOR}" "${RUNNER}"; then
+  if grep -En "${forbidden}" "${EVALUATOR}" "${RUNNER}"; then
     echo "forbidden control mechanism found: ${forbidden}" >&2
     exit 1
   fi
 done
 
-rg -q 'parser\.add_argument\("--action-source", choices=\("vla", "gt-replay"\), default="vla"\)' \
+grep -Fq 'parser.add_argument("--action-source", choices=("vla", "gt-replay"), default="vla")' \
   "${EVALUATOR}"
-rg -q 'prompt_for_vla = current_prompt or planner\.default_subtask_prompt' "${EVALUATOR}"
-rg -q 'output = client\.infer\(element\)' "${EVALUATOR}"
-rg -q -- '--action-source[[:space:]]+vla' "${RUNNER}"
+grep -Fq 'prompt_for_vla = current_prompt or planner.default_subtask_prompt' "${EVALUATOR}"
+grep -Fq 'output = client.infer(element)' "${EVALUATOR}"
+grep -Eq -- '--action-source[[:space:]]+vla' "${RUNNER}"
 
-if rg -n -- '--action-source[[:space:]]+gt-replay|--trajectory-only' "${RUNNER}"; then
+if grep -En -- '--action-source[[:space:]]+gt-replay|--trajectory-only' "${RUNNER}"; then
   echo "runner enables GT replay or trajectory-only control" >&2
   exit 1
 fi
 
 echo "PASS: VLM prompt -> VLA action path; no hold/release/anchor/oracle control"
-

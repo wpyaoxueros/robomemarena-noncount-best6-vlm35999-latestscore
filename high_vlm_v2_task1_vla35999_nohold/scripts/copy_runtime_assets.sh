@@ -59,4 +59,5 @@ cmp "${RECORDS_DIR}/libero_source.sha256" "${RECORDS_DIR}/libero_copy.sha256"
 } > "${RECORDS_DIR}/runtime_asset_provenance.tsv"
 
 echo "runtime asset copy verified: ${ASSET_ROOT}"
+"${SCRIPT_DIR}/prepare_shared_permissions.sh"
 

@@ -92,3 +92,9 @@
 - Root-cause update: repeated VLM inference alone is not sufficient to trigger the step-250 native abort. The next isolation must distinguish the VLA inference/server path from environment physics driven by VLA-produced actions.
 - Guardrail: summary reports `task_success=0`, semantic progress `0.25`, and `failure_reason=max_steps`; these values describe the diagnostic replay and must not be counted as an autonomous VLA evaluation.
 - Receipt: `records/results/task1_gt_replay_runtime_diag_retry1_20260824_020125.md`.
+
+#### Autonomous native-stack retry preparation
+
+- Hypothesis under test: the native abort is in the evaluator-side VLA action/physics path, because the VLA-free GT replay completed 300 steps and 60 VLM calls cleanly while the VLA server logs from both invalid autonomous runs contain no server failure.
+- Single instrumentation change: enable Python's built-in `PYTHONFAULTHANDLER=1` for both the VLA server and evaluator processes. No copied evaluator source, model, prompt, action, stage, scoring, or rollout parameter changes.
+- Expected evidence if the abort repeats: evaluator stderr should contain the active Python/native-extension stack at `SIGABRT`, allowing the next isolation to target one component rather than another blind rerun.

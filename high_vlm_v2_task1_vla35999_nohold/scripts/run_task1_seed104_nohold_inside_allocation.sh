@@ -85,6 +85,7 @@ config_path.write_text(
 PY
 
 export PYTHONNOUSERSITE=1
+export PYTHONFAULTHANDLER=1
 export TRANSFORMERS_NO_TF=1
 export USE_TF=0
 export HF_HUB_OFFLINE=1
@@ -167,7 +168,7 @@ trap cleanup EXIT INT TERM
 
 (
   cd "${OPENPI_ROOT}"
-  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false \
+  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTHONFAULTHANDLER=1 \
     "${VLA_PY}" -u scripts/serve_policy.py --port "${PORT}" \
       policy:checkpoint \
       --policy.config="${VLA_CONFIG}" \
@@ -233,7 +234,7 @@ printf '%q ' env CUDA_VISIBLE_DEVICES=1 "${eval_cmd[@]}" > "${COMMAND_FILE}"
 printf '\n' >> "${COMMAND_FILE}"
 
 set +e
-CUDA_VISIBLE_DEVICES=1 "${eval_cmd[@]}" > "${EVAL_LOG}" 2>&1
+CUDA_VISIBLE_DEVICES=1 PYTHONFAULTHANDLER=1 "${eval_cmd[@]}" > "${EVAL_LOG}" 2>&1
 eval_rc=$?
 set -e
 

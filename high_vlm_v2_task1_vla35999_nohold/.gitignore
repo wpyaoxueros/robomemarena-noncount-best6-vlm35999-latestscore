@@ -1,0 +1,9 @@
+runtime_assets/
+runs/
+records/probes/
+records/launcher_logs/
+**/__pycache__/
+*.pyc
+core
+core.*
+

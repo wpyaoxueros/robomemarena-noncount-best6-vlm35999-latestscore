@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EXP_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+VLA_CHECKPOINT="${VLA_CHECKPOINT:-/data/user/hlei573/openpi/checkpoints/pi05_libero_robomemarena_fullvlm_v2_noflip_dataset/fullvlm_v2_robomemarena_noflip_v2_bs128_4gpu_20260507_183338/35999}"
+VLM_ADAPTER="${VLM_ADAPTER:-${EXP_ROOT}/runtime_assets/high_vlm_v2_26tasks_lora_r32_final_adapter}"
+VLM_BASE="${VLM_BASE:-/data/user/jwen341/model_lib/Qwen3-VL-8B-Instruct}"
+TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH:-${EXP_ROOT}/runtime_assets/libero_fork/libero}"
+EVAL_PY="${EVAL_PY:-/data/user/hlei573/openpi_inference/.venv/bin/python}"
+RUN_ID="${RUN_ID:-task1_seed104_nohold_$(date +%Y%m%d_%H%M%S)}"
+LAUNCH_LOG_DIR="${EXP_ROOT}/records/launcher_logs"
+PROBE_DIR="${EXP_ROOT}/records/probes/${RUN_ID}"
+LAUNCH_LOG="${LAUNCH_LOG_DIR}/${RUN_ID}.log"
+PARTITIONS=(acd_u acd_ue emergency_acd)
+
+if [[ "$(whoami)" != "hzhang061" ]]; then
+  echo "launch this script from the hzhang061 login shell" >&2
+  exit 1
+fi
+
+mkdir -p "${LAUNCH_LOG_DIR}" "${PROBE_DIR}"
+exec > >(tee -a "${LAUNCH_LOG}") 2>&1
+
+printf 'launch_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+printf 'unix_user=%s\n' "$(whoami)"
+printf 'run_id=%s\n' "${RUN_ID}"
+
+export EXP_ROOT VLA_CHECKPOINT VLM_ADAPTER VLM_BASE TARGET_LIBERO_PATH EVAL_PY
+export PYTHONNOUSERSITE=1
+
+run_with_escalation() {
+  local label="$1"
+  local gpus="$2"
+  local cpus="$3"
+  local mem="$4"
+  local time_limit="$5"
+  shift 5
+  local partition marker attempt_log rc
+
+  for partition in "${PARTITIONS[@]}"; do
+    marker="${PROBE_DIR}/${label}_${partition}.allocated"
+    attempt_log="${PROBE_DIR}/${label}_${partition}.log"
+    rm -f "${marker}"
+    echo "request label=${label} partition=${partition} gpus=${gpus} cpus=${cpus} mem=${mem}"
+    set +e
+    srun \
+      --partition="${partition}" \
+      --nodes=1 \
+      --ntasks=1 \
+      --gres="gpu:${gpus}" \
+      --cpus-per-task="${cpus}" \
+      --mem="${mem}" \
+      --time="${time_limit}" \
+      --job-name="hv2_t1_${label}_${RUN_ID: -6}" \
+      --immediate=20 \
+      bash -lc "printf 'allocated\\n' > '${marker}'; exec \"\$@\"" bash "$@" \
+      > >(tee -a "${attempt_log}") 2>&1
+    rc=$?
+    set -e
+
+    if [[ -e "${marker}" ]]; then
+      if [[ "${rc}" -ne 0 ]]; then
+        echo "allocated command failed label=${label} partition=${partition} rc=${rc}" >&2
+        return "${rc}"
+      fi
+      echo "request passed label=${label} partition=${partition}"
+      SELECTED_PARTITION="${partition}"
+      return 0
+    fi
+    echo "no allocation within 20 seconds on ${partition}; escalating"
+  done
+
+  echo "unable to allocate ${label} on any permitted partition" >&2
+  return 1
+}
+
+EXPECTED_GPU_COUNT=1 run_with_escalation \
+  one_gpu_probe 1 4 16384M 00:05:00 \
+  env EXPECTED_GPU_COUNT=1 EXP_ROOT="${EXP_ROOT}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
+    VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
+    TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
+    "${SCRIPT_DIR}/probe_gpu_environment.sh"
+
+EXPECTED_GPU_COUNT=2 run_with_escalation \
+  two_gpu_shape_probe 2 16 163840M 00:05:00 \
+  env EXPECTED_GPU_COUNT=2 EXP_ROOT="${EXP_ROOT}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
+    VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
+    TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
+    "${SCRIPT_DIR}/probe_gpu_environment.sh"
+
+run_with_escalation \
+  formal_eval 2 16 163840M 08:00:00 \
+  env RUN_ID="${RUN_ID}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
+    VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
+    TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
+    "${SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh"
+
+echo "launcher complete run_id=${RUN_ID} formal_partition=${SELECTED_PARTITION}"
+

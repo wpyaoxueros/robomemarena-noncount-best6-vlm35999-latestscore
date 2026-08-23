@@ -98,3 +98,12 @@
 - Hypothesis under test: the native abort is in the evaluator-side VLA action/physics path, because the VLA-free GT replay completed 300 steps and 60 VLM calls cleanly while the VLA server logs from both invalid autonomous runs contain no server failure.
 - Single instrumentation change: enable Python's built-in `PYTHONFAULTHANDLER=1` for both the VLA server and evaluator processes. No copied evaluator source, model, prompt, action, stage, scoring, or rollout parameter changes.
 - Expected evidence if the abort repeats: evaluator stderr should contain the active Python/native-extension stack at `SIGABRT`, allowing the next isolation to target one component rather than another blind rerun.
+
+#### Five-repeat no-hold Task1 request 20260824_022431
+
+- Batch: `task1_nohold_5repeat_20260824_022431`.
+- Repeat 0: existing in-flight run `task1_seed104_nohold_native_trace_20260824_021105`, Job `537892`.
+- Repeats 1-4: four new independent launches, all Task1 seed104 with the same high-vlm-v2 adapter, VLA checkpoint 35999 and no-hold control contract.
+- Parallel shape: each repeat gets an independent one-node/two-GPU formal allocation, unique run ID, port, logs, manifest and frozen runner.
+- Scoring rule: count only repeats that close with an episode summary; native aborts without summary remain invalid rather than failures.
+- Request receipt: `records/run_request_task1_nohold_5repeat_20260824_022431.md`.

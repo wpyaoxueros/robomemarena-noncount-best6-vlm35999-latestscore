@@ -178,3 +178,13 @@
 - Control exclusions: no hold, release, anchor, oracle prompt injection, stage/order gate, or GT replay.
 - Borrowed-account preflight: verified `whoami=hzhang061`, host `ACD-Manage-3`, adapter read access, and write access to `records/` and `runs/`.
 - Launch gate: fresh one-GPU probe, fresh two-GPU shape probe, then two-GPU formal evaluation from the same borrowed-account shell.
+
+### Two-call formal terminal result
+
+- Run ID: `task1_seed104_two_call_20260824_042058`.
+- Formal allocation: Job `538366`, Unix user/account `hzhang061`, partition `acd_u`, node `ACD1-54`, two H100 80GB GPUs; Slurm terminal state `FAILED`, exit `6:0`.
+- Frozen controller: producer commit `201fc0a22b24fe699c10367ec85322cd615f42ff`; evaluator SHA-256 `08953c69810956cf25d0b15f949cd9e8cbf0640ac4d9b9d1a62cbb8e35cf4932`; `CONTROLLER_STABLE_VLM_CALLS=2`.
+- Partial rollout: reached state step `250` and VLM call `50`. Calls 43-49 remained `pick cookies`; call 50 emitted `place cookies into basket` once. The controller did not prematurely switch because the new prompt had not appeared twice consecutively.
+- Native failure: the evaluator aborted with exit `134` in MuJoCo/robosuite `binding_utils.read_pixels` during `env.step`. The websocket VLA server remained available and logged no policy-model exception.
+- Scientific validity: no episode row was appended to `summary.tsv`, no finalized video exists, and the attempt is excluded rather than scored `0/1`.
+- Evidence SHA-256: `logs/evaluator.log` `f076027b21b3a330fd634867ab655a1b43216c9c1a1341762ab0a1fd3b0fb1e6`; `eval/task1/ep000/sync_vlm.log` `e5927a81a58ef5d40d9e841512fab0f27a293b6abfba4a87a80007ec38fae4a3`; `run_manifest.json` `d3bc00a898e7ed4cb5fe70784523acd60c4722a242bb8d8a2f8678311d76fa38`.

@@ -149,3 +149,20 @@
 - Manifests: all three are `RUNNING`, producer commit `ba61b8e0bc73a4a70948a5363dab1f19bafd6ba7`, checkpoint-local norm SHA-256 `4f71f864b3d34e3b58616d5c01b5efa86e57b317e014a091f62f9ef13ba67a8a`, and official scorer SHA-256 `0ab5e19cb7b90844b86fe04a76facc0364af55f1e841c4754aa675404a318538`.
 - First runtime evidence: every run loaded all 750 Qwen3-VL weights, opened its own websocket connection to VLA35999, resolved the tracked official Task2/3/4 BDDL, and emitted t=0 dual-camera inputs plus one synchronous VLM trace.
 - Initial autonomous prompts: Task2 `pick butter` at progress `0.05185`; Task3 `pick cream` at progress `0.06657`; Task4 `place butter into top drawer` at progress `0.05749`. These are raw VLM outputs and are not corrected by the extension.
+
+## 2026-08-24 Task1 two-call controller prompt confirmation
+
+- Status: `IMPLEMENTED_VALIDATED_NOT_LAUNCHED`.
+- Purpose: retain the Task1 high-vlm-v2 plus VLA35999 no-hold path, but require two consecutive fresh VLM predictions of the same new primitive before changing the prompt sent to VLA.
+- Isolation: the byte-identical `source/vlm_ft/eval_three_tasks.py` remains unchanged. `extensions/eval_two_call_prompt_commit.py` wraps only the recording planner result delivered to the existing action loop.
+- Correctness detail: confirmation counts `event["parsed_primitive"]`, not the base planner's persistent fallback prompt. An empty parse or inference error therefore clears a pending candidate rather than producing a false second confirmation.
+- Initial prompt: the planner's default first primitive is active immediately. Confirmation applies only to later prompt changes.
+- Unchanged controls: VLM adapter/base/processor, dual-camera preprocessing, five-step VLM interval, five recent frames, eight-keyframe cap, keyframe-memory updates, VLA35999 checkpoint and checkpoint-local norm, five-step replanning, Task1 seed104, physical tracker, and no hold/release/anchor/oracle/GT replay.
+- Trace additions: `raw_controller_prompt`, `model_accepted_prompt`, `controller_candidate_prompt`, `controller_candidate_count`, `controller_required_calls`, `controller_prompt_committed`, and `accepted_controller_prompt` in `vlm_predictions.jsonl`.
+- Unit tests: `tests/test_two_call_prompt_commit.py`, `7 passed`.
+- Combined extension tests: `12 passed` across two-call and Task2/3/4 extension suites.
+- Static gates: Python compilation and adapter CLI help pass; runner/launcher scripts pass `bash -n`; all 18 immutable source files pass SHA-256 verification; no-hold audit reports `PASS` with the adapter included.
+- Validation command correction: an initial composite command referenced a nonexistent `vla35998` workdir and never ran. The same gate was rerun from the correct `vla35999` directory and passed; no scientific result was produced by the typo.
+- Reproducibility review: the first launcher wiring would have executed the tracked but live adapter path. Before launch, this was corrected so every request copies the selected adapter next to the frozen probe and runner, hashes all three in `SHA256SUMS`, executes the frozen adapter, passes the committed experiment root through `HV2_EXP_ROOT`, and records `selected_evaluator_sha256` in the manifest.
+- Design: `../docs/superpowers/specs/2026-08-24-high-vlm-v2-two-call-prompt-commit-design.md`.
+- Plan: `../docs/superpowers/plans/2026-08-24-high-vlm-v2-two-call-prompt-commit.md`.

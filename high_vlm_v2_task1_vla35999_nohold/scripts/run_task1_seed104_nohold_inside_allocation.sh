@@ -16,7 +16,10 @@ VLM_ADAPTER="${VLM_ADAPTER:-${EXP_ROOT}/runtime_assets/high_vlm_v2_26tasks_lora_
 TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH:-${EXP_ROOT}/runtime_assets/libero_fork/libero}"
 REFERENCE_RUNTIME="${EXP_ROOT}/source/eval_robomem/robomemarena_official/evaluation_benchmark/reference_evaluation/tasks2_26_vlm5_reference/eval_tasks2_26_vlm_vla.py"
 TASK_CONFIG="${EXP_ROOT}/source/eval_robomem/robomemarena_official/evaluation_benchmark/reference_evaluation/tasks2_26_vlm5_reference/fullvlm_v2_26_memory_tasks.json"
-EVALUATOR="${EXP_ROOT}/source/vlm_ft/eval_three_tasks.py"
+EVALUATOR="${EVALUATOR:-${EXP_ROOT}/source/vlm_ft/eval_three_tasks.py}"
+CONTROLLER_STABLE_VLM_CALLS="${CONTROLLER_STABLE_VLM_CALLS:-1}"
+CONTROL_CONTRACT="${CONTROL_CONTRACT:-synchronous VLM prompt -> VLA actions; no hold/release/anchor/oracle/GT replay}"
+AUDIT_EXTENSION="${AUDIT_EXTENSION:-}"
 RUN_ID="${RUN_ID:-task1_seed104_nohold_$(date +%Y%m%d_%H%M%S)}"
 RUN_ROOT="${EXP_ROOT}/runs/${RUN_ID}"
 PORT="${PORT:-$((18000 + ${SLURM_JOB_ID:-0} % 20000))}"
@@ -54,7 +57,8 @@ for required in \
 done
 
 "${AUDIT_SCRIPT_DIR}/verify_source_snapshot.sh"
-"${AUDIT_SCRIPT_DIR}/audit_nohold_contract.sh"
+RUNNER="${BASH_SOURCE[0]}" EXTENSION="${AUDIT_EXTENSION}" \
+  "${AUDIT_SCRIPT_DIR}/audit_nohold_contract.sh"
 
 mkdir -p "${RUN_ROOT}/logs" "${RUN_ROOT}/hf_cache" "${RUN_ROOT}/libero_config"
 chmod 2775 "${RUN_ROOT}" "${RUN_ROOT}/logs" "${RUN_ROOT}/hf_cache" "${RUN_ROOT}/libero_config"
@@ -103,8 +107,10 @@ SOURCE_COMMIT="$(git -C "${REPO_ROOT}" rev-parse HEAD)"
 RUNNER_SHA256="$(sha256sum "${BASH_SOURCE[0]}" | awk '{print $1}')"
 NORM_SHA256="$(sha256sum "${VLA_CHECKPOINT}/assets/robomemarena_fullvlm_v2_noflip_dataset_v2/norm_stats.json" | awk '{print $1}')"
 ADAPTER_SHA256="$(sha256sum "${VLM_ADAPTER}/adapter_model.safetensors" | awk '{print $1}')"
+EVALUATOR_SHA256="$(sha256sum "${EVALUATOR}" | awk '{print $1}')"
 SLURM_JOB_RECORD="$(scontrol show job -o "${SLURM_JOB_ID}")"
 export SLURM_JOB_RECORD
+export EVALUATOR EVALUATOR_SHA256 CONTROLLER_STABLE_VLM_CALLS CONTROL_CONTRACT AUDIT_EXTENSION
 
 "${EVAL_PY}" - "${MANIFEST}" <<PY
 import json
@@ -136,7 +142,8 @@ payload = {
     "frozen_runner_sha256": "${RUNNER_SHA256}",
     "task": 1,
     "seed": 104,
-    "control_contract": "synchronous VLM prompt -> VLA actions; no hold/release/anchor/oracle/GT replay",
+    "control_contract": os.environ["CONTROL_CONTRACT"],
+    "controller_stable_vlm_calls": int(os.environ["CONTROLLER_STABLE_VLM_CALLS"]),
     "vla": {
         "config": "${VLA_CONFIG}",
         "checkpoint": "${VLA_CHECKPOINT}",
@@ -148,7 +155,10 @@ payload = {
         "adapter": "${VLM_ADAPTER}",
         "adapter_model_sha256": "${ADAPTER_SHA256}",
     },
-    "copied_evaluator": "${EVALUATOR}",
+    "copied_evaluator": os.environ["EVALUATOR"],
+    "selected_evaluator": os.environ["EVALUATOR"],
+    "selected_evaluator_sha256": os.environ["EVALUATOR_SHA256"],
+    "audit_extension": os.environ.get("AUDIT_EXTENSION", ""),
     "reference_runtime": "${REFERENCE_RUNTIME}",
     "task_config": "${TASK_CONFIG}",
     "libero": "${TARGET_LIBERO_PATH}",
@@ -230,11 +240,13 @@ eval_cmd=(
   --save-video
   --save-vlm-images
 )
-printf '%q ' env CUDA_VISIBLE_DEVICES=1 "${eval_cmd[@]}" > "${COMMAND_FILE}"
+printf '%q ' env CONTROLLER_STABLE_VLM_CALLS="${CONTROLLER_STABLE_VLM_CALLS}" \
+  CUDA_VISIBLE_DEVICES=1 "${eval_cmd[@]}" > "${COMMAND_FILE}"
 printf '\n' >> "${COMMAND_FILE}"
 
 set +e
-CUDA_VISIBLE_DEVICES=1 PYTHONFAULTHANDLER=1 "${eval_cmd[@]}" > "${EVAL_LOG}" 2>&1
+CONTROLLER_STABLE_VLM_CALLS="${CONTROLLER_STABLE_VLM_CALLS}" \
+  CUDA_VISIBLE_DEVICES=1 PYTHONFAULTHANDLER=1 "${eval_cmd[@]}" > "${EVAL_LOG}" 2>&1
 eval_rc=$?
 set -e
 

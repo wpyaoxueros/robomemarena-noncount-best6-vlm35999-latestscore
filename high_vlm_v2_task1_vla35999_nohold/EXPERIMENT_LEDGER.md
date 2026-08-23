@@ -73,3 +73,9 @@
 - Termination: reached `t=250`, then evaluator exited by `SIGABRT`, exit code `134`. The manifest closed correctly as `FAILED`; no episode summary or MP4 exists, so this is an invalid result.
 - Updated hypothesis: two native aborts occurred near step 250 / VLM call 50 while the object remained grasped above the basket. The frozen retry rules out live launcher editing as the evaluator-abort cause.
 - Next isolation: same VLM/environment/image-saving path for 300 steps with original HDF actions and no VLA server. This is a runtime diagnostic only, not an evaluation result.
+
+#### Diagnostic allocation attempt 20260824_015802
+
+- The launcher dynamically discovered `2,000,000 MB` as the largest node memory in `acd_u`, `acd_ue`, and `emergency_acd`.
+- Immediate requests `537827`, `537828`, and `537829` all failed with matching nodes busy; no GPU probe or diagnostic process ran.
+- Correction: each partition still receives the maximum-memory attempt first, then a `163,840 MB` fallback. Prior two-model runs established that this fallback is sufficient; it broadens eligible nodes without changing diagnostic behavior.

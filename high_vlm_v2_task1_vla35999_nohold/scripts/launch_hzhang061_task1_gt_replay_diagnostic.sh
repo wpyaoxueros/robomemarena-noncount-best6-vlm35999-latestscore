@@ -35,23 +35,25 @@ max_mem_mb() {
 run_with_escalation() {
   local label="$1" time_limit="$2"
   shift 2
-  local partition mem marker log rc
+  local partition max_mem mem_mb marker log rc
   for partition in "${PARTITIONS[@]}"; do
-    mem="$(max_mem_mb "${partition}")M"
-    marker="${PROBE_DIR}/${label}_${partition}.allocated"
-    log="${PROBE_DIR}/${label}_${partition}.log"
-    set +e
-    srun --partition="${partition}" --nodes=1 --ntasks=1 --gres=gpu:1 \
-      --cpus-per-task=12 --mem="${mem}" --time="${time_limit}" \
-      --job-name="hv2_t1_${label}_${RUN_ID: -6}" --immediate=20 \
-      bash -lc "printf 'allocated\n' > '${marker}'; exec \"\$@\"" bash "$@" \
-      > >(tee -a "${log}") 2>&1
-    rc=$?
-    set -e
-    if [[ -e "${marker}" ]]; then
-      [[ "${rc}" -eq 0 ]] || return "${rc}"
-      return 0
-    fi
+    max_mem="$(max_mem_mb "${partition}")"
+    for mem_mb in "${max_mem}" 163840; do
+      marker="${PROBE_DIR}/${label}_${partition}_${mem_mb}M.allocated"
+      log="${PROBE_DIR}/${label}_${partition}_${mem_mb}M.log"
+      set +e
+      srun --partition="${partition}" --nodes=1 --ntasks=1 --gres=gpu:1 \
+        --cpus-per-task=12 --mem="${mem_mb}M" --time="${time_limit}" \
+        --job-name="hv2_t1_${label}_${RUN_ID: -6}" --immediate=20 \
+        bash -lc "printf 'allocated\n' > '${marker}'; exec \"\$@\"" bash "$@" \
+        > >(tee -a "${log}") 2>&1
+      rc=$?
+      set -e
+      if [[ -e "${marker}" ]]; then
+        [[ "${rc}" -eq 0 ]] || return "${rc}"
+        return 0
+      fi
+    done
   done
   return 1
 }

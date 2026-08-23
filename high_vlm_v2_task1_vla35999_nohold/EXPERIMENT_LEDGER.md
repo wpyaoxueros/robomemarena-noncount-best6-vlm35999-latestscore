@@ -142,4 +142,10 @@
 - Run IDs: `task2_seed104_highvlmv2_nohold_20260824_032901`, `task3_seed104_highvlmv2_nohold_20260824_032901`, and `task4_seed104_highvlmv2_nohold_20260824_032901`.
 - Launch topology: three independent tmux sessions in the `hzhang061` shell; each launcher requests its own one-GPU probe, then two-GPU shape probe, then formal episode.
 - Task2 one-GPU probe: Job `538171`, account/user `hzhang061`, partition `acd_u`, node `ACD1-4`, H100 80GB, bf16 true, passed.
-- Current queue: Task2 two-GPU shape Job `538174`, Task3 one-GPU Job `538172`, and Task4 one-GPU Job `538173` are pending. Formal episodes have not yet been submitted.
+- Task2 two-GPU shape probe: Job `538174`, account/user `hzhang061`, partition `acd_u`, node `ACD1-8`, two H100 80GB GPUs, passed.
+- Task3 probes: one-GPU Job `538172` on `ACD1-6`, then two-GPU Job `538179` on `ACD1-8`; both passed.
+- Task4 probes: one-GPU Job `538173` and two-GPU Job `538176`, both on `ACD1-8`; both passed.
+- Formal allocations: Task2 Job `538177`, Task3 Job `538181`, and Task4 Job `538180`, all account/user `hzhang061`, partition `acd_u`, node `ACD1-8`, two H100 GPUs per task.
+- Manifests: all three are `RUNNING`, producer commit `ba61b8e0bc73a4a70948a5363dab1f19bafd6ba7`, checkpoint-local norm SHA-256 `4f71f864b3d34e3b58616d5c01b5efa86e57b317e014a091f62f9ef13ba67a8a`, and official scorer SHA-256 `0ab5e19cb7b90844b86fe04a76facc0364af55f1e841c4754aa675404a318538`.
+- First runtime evidence: every run loaded all 750 Qwen3-VL weights, opened its own websocket connection to VLA35999, resolved the tracked official Task2/3/4 BDDL, and emitted t=0 dual-camera inputs plus one synchronous VLM trace.
+- Initial autonomous prompts: Task2 `pick butter` at progress `0.05185`; Task3 `pick cream` at progress `0.06657`; Task4 `place butter into top drawer` at progress `0.05749`. These are raw VLM outputs and are not corrected by the extension.

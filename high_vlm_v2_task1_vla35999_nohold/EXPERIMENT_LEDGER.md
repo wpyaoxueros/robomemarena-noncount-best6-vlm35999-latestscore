@@ -107,3 +107,13 @@
 - Parallel shape: each repeat gets an independent one-node/two-GPU formal allocation, unique run ID, port, logs, manifest and frozen runner.
 - Scoring rule: count only repeats that close with an episode summary; native aborts without summary remain invalid rather than failures.
 - Request receipt: `records/run_request_task1_nohold_5repeat_20260824_022431.md`.
+
+#### Five-repeat interim execution
+
+- Repeat 0: `task1_seed104_nohold_native_trace_20260824_021105`, formal Job `537892`, node `ACD1-50`, valid summary, `task_success=0`, semantic progress `0.5`, `2/4` primitives, `2500` steps.
+- Repeat 1: `task1_seed104_nohold_5rep_b022431_r1_retry1_20260824_0229`, formal Job `538005`, node `ACD1-52`, valid summary, `task_success=1`, semantic progress `1.0`, `4/4` primitives, `824` steps.
+- Repeat 3: `task1_seed104_nohold_5rep_b022431_r3_retry1_20260824_0229`, formal Job `538003`, node `ACD1-19`, valid summary, `task_success=0`, semantic progress `0.5`, `2/4` primitives, `2500` steps.
+- Repeat 4: `task1_seed104_nohold_5rep_b022431_r4_retry1_20260824_0229`, formal Job `538004`, node `ACD1-52`, valid summary, `task_success=0`, semantic progress `0.5`, `2/4` primitives, `2500` steps.
+- Interim aggregate: `1/4` success. The three failures completed `pick cookies` and `place cookies into basket`, then failed to complete `pick tomato sauce` before max steps.
+- Invalid allocation attempts: launches that ended before a formal episode produced no summary and do not enter the aggregate. Their launcher/probe logs remain under `records/launcher_logs/` and `records/probes/`.
+- Repeat-2 retry 2 gates: one-GPU Job `538041` passed on `ACD1-4`; two-GPU shape Job `538042` passed on `ACD1-31`; formal Job `538043` started on `acd_u`, node `ACD1-31`, two H100 GPUs.

@@ -117,6 +117,7 @@
 - Interim aggregate: `1/4` success. The three failures completed `pick cookies` and `place cookies into basket`, then failed to complete `pick tomato sauce` before max steps.
 - Invalid allocation attempts: launches that ended before a formal episode produced no summary and do not enter the aggregate. Their launcher/probe logs remain under `records/launcher_logs/` and `records/probes/`.
 - Repeat-2 retry 2 gates: one-GPU Job `538041` passed on `ACD1-4`; two-GPU shape Job `538042` passed on `ACD1-31`; formal Job `538043` started on `acd_u`, node `ACD1-31`, two H100 GPUs.
+- Repeat-2 retry 2 terminal result: Job `538043` failed with evaluator exit `134` after 33m17s. `PYTHONFAULTHANDLER` locates the abort in robosuite/MuJoCo rendering at `binding_utils.read_pixels` during `env.step`; the VLA server did not fail. The summary has no data row, so this attempt is invalid and the batch remains `1/4` over valid episodes.
 
 ## 2026-08-24 Task2/3/4 physical no-hold extension
 
@@ -135,3 +136,10 @@
 - Correction: the helper now changes only entries owned by its invoking Unix user. Direct validation from the `hzhang061` shell reported `RECORDS_WRITE_OK`, `RUNS_WRITE_OK`, `EXTENSION_READ_OK`, and `NORM_READ_OK`.
 - Initial request: Task2/3/4, seed104, one autonomous episode each, launched independently in parallel. Every task must pass a fresh one-GPU probe and a fresh two-GPU formal-shape probe in its own `hzhang061` shell chain before formal execution.
 - Request receipt: `records/run_request_task234_seed104_20260824_032523.md`.
+
+### Initial Task2/3/4 allocation gates
+
+- Run IDs: `task2_seed104_highvlmv2_nohold_20260824_032901`, `task3_seed104_highvlmv2_nohold_20260824_032901`, and `task4_seed104_highvlmv2_nohold_20260824_032901`.
+- Launch topology: three independent tmux sessions in the `hzhang061` shell; each launcher requests its own one-GPU probe, then two-GPU shape probe, then formal episode.
+- Task2 one-GPU probe: Job `538171`, account/user `hzhang061`, partition `acd_u`, node `ACD1-4`, H100 80GB, bf16 true, passed.
+- Current queue: Task2 two-GPU shape Job `538174`, Task3 one-GPU Job `538172`, and Task4 one-GPU Job `538173` are pending. Formal episodes have not yet been submitted.

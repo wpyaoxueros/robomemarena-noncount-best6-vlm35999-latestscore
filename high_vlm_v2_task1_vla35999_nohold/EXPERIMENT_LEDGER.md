@@ -79,3 +79,16 @@
 - The launcher dynamically discovered `2,000,000 MB` as the largest node memory in `acd_u`, `acd_ue`, and `emergency_acd`.
 - Immediate requests `537827`, `537828`, and `537829` all failed with matching nodes busy; no GPU probe or diagnostic process ran.
 - Correction: each partition still receives the maximum-memory attempt first, then a `163,840 MB` fallback. Prior two-model runs established that this fallback is sufficient; it broadens eligible nodes without changing diagnostic behavior.
+
+#### GT-replay runtime diagnostic retry 20260824_020125
+
+- Status: `COMPLETED_DIAGNOSTIC_ONLY`; this is not a Task1 policy result.
+- Producer commit: `8b5e79d13ffe9f003095a0205096d385a042534b`.
+- Fresh one-GPU gate: Job `537846`, Unix user/account `hzhang061`, partition `acd_ue`, node `ACD1-6`, one H100 80GB, bf16 `true`.
+- Formal-shape gate: Job `537850`, same Unix user/account and partition, node `ACD1-1`, one H100 80GB, bf16 `true`.
+- Diagnostic: Job `537853`, partition `acd_u`, node `ACD1-6`, one H100 80GB, 160 GiB RAM; frozen runner SHA-256 `f44063ba29641c7003aec3892d65b2ee915c6048b903b92987ebcbad470f15e8`.
+- Controlled variable: retained the copied high-vlm-v2 model, synchronous VLM cadence, images, keyframe memory, LIBERO environment, and video/image writers; removed the VLA server and replaced VLA actions with original HDF action replay.
+- Result: clean exit `0` after 300 steps and 60 VLM calls. Inputs exist through `t=295`; summary, aggregate, main MP4, and wrist MP4 were all written.
+- Root-cause update: repeated VLM inference alone is not sufficient to trigger the step-250 native abort. The next isolation must distinguish the VLA inference/server path from environment physics driven by VLA-produced actions.
+- Guardrail: summary reports `task_success=0`, semantic progress `0.25`, and `failure_reason=max_steps`; these values describe the diagnostic replay and must not be counted as an autonomous VLA evaluation.
+- Receipt: `records/results/task1_gt_replay_runtime_diag_retry1_20260824_020125.md`.

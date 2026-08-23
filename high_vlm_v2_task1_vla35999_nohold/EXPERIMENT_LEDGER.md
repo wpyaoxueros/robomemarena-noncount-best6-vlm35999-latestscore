@@ -41,3 +41,25 @@
 - Queue escalation: `acd_u`, then `acd_ue`, then `emergency_acd`, each with a 20-second immediate-allocation gate.
 - Rollout: Task1, seed104, one episode, direct VLM prompt to VLA action path with no hold/release/anchor/oracle/GT replay.
 - Result: pending.
+
+#### Allocation gate
+
+- Fresh 1-GPU probe: Job `537542`, `hzhang061`, account `hzhang061`, partition `acd_u`, node `ACD1-11`, one H100 80GB, bf16 `true`, passed.
+- Fresh 2-GPU shape probe: Job `537543`, same Unix user/account/partition/node, two H100 80GB, both bf16 `true`, passed.
+- Formal allocation: Job `537544`, account `hzhang061`, partition `acd_u`, node `ACD1-11`, two GPUs, 16 CPUs, 160 GiB RAM.
+- VLA startup: checkpoint 35999 restored and checkpoint-local noflip norm assets loaded.
+
+#### LIBERO first-run configuration
+
+- Startup pause: the evaluator reached LIBERO import but the run-local config directory had no `config.yaml`; upstream LIBERO therefore requested interactive dataset-path input.
+- Current-run continuation: answered `N`, which wrote LIBERO's own default path dictionary rooted at the copied LIBERO runtime. No policy or evaluation-control input was supplied.
+- Permanent correction: the formal runner now writes the identical path dictionary before evaluator import, so reproduction is non-interactive.
+
+#### Invalid Job 537544 result
+
+- Runtime: `hzhang061`, account `hzhang061`, partition `acd_u`, node `ACD1-11`, two H100 80GB GPUs.
+- Partial rollout: reached `t=245`; `pick cookies` completed at `t=127`; the VLM autonomously switched to `place cookies into basket` at `t=145` transiently and then stably at `t=195`.
+- Last physical state: cookies remained grasped and horizontally aligned near the basket; no subsequent episode summary or video was written.
+- Termination: evaluator exited by `SIGABRT` and Slurm Job `537544` ended `FAILED`, exit `2:0`. This episode is invalid and is not scored as success or failure.
+- Parent-shell defect: the shared runner was updated while the running shell still referenced it, so after the child abort the shell read shifted source lines and emitted spurious `command not found` errors. This did not produce a scientific result but made cleanup non-reproducible.
+- Correction: each launch now snapshots the probe and formal runner before any Slurm request; the manifest records the frozen runner path and SHA-256. A running job's script is never edited in place.

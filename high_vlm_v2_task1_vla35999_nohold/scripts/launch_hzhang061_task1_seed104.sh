@@ -25,6 +25,18 @@ if [[ ! -w "${EXP_ROOT}/records" || ! -w "${EXP_ROOT}/runs" ]]; then
 fi
 
 mkdir -p "${LAUNCH_LOG_DIR}" "${PROBE_DIR}"
+FROZEN_SCRIPT_DIR="${PROBE_DIR}/frozen_scripts"
+mkdir -p "${FROZEN_SCRIPT_DIR}"
+cp "${SCRIPT_DIR}/probe_gpu_environment.sh" "${FROZEN_SCRIPT_DIR}/probe_gpu_environment.sh"
+cp "${SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh" \
+  "${FROZEN_SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh"
+chmod 755 "${FROZEN_SCRIPT_DIR}/probe_gpu_environment.sh" \
+  "${FROZEN_SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh"
+sha256sum "${FROZEN_SCRIPT_DIR}/probe_gpu_environment.sh" \
+  "${FROZEN_SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh" \
+  > "${FROZEN_SCRIPT_DIR}/SHA256SUMS"
+FROZEN_PROBE="${FROZEN_SCRIPT_DIR}/probe_gpu_environment.sh"
+FROZEN_RUNNER="${FROZEN_SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh"
 exec > >(tee -a "${LAUNCH_LOG}") 2>&1
 
 printf 'launch_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -85,21 +97,20 @@ EXPECTED_GPU_COUNT=1 run_with_escalation \
   env EXPECTED_GPU_COUNT=1 EXP_ROOT="${EXP_ROOT}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
     VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
     TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
-    "${SCRIPT_DIR}/probe_gpu_environment.sh"
+    "${FROZEN_PROBE}"
 
 EXPECTED_GPU_COUNT=2 run_with_escalation \
   two_gpu_shape_probe 2 16 163840M 00:05:00 \
   env EXPECTED_GPU_COUNT=2 EXP_ROOT="${EXP_ROOT}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
     VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
     TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
-    "${SCRIPT_DIR}/probe_gpu_environment.sh"
+    "${FROZEN_PROBE}"
 
 run_with_escalation \
   formal_eval 2 16 163840M 08:00:00 \
   env RUN_ID="${RUN_ID}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
     VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
     TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
-    "${SCRIPT_DIR}/run_task1_seed104_nohold_inside_allocation.sh"
+    env EXP_ROOT="${EXP_ROOT}" AUDIT_SCRIPT_DIR="${SCRIPT_DIR}" "${FROZEN_RUNNER}"
 
 echo "launcher complete run_id=${RUN_ID} formal_partition=${SELECTED_PARTITION}"
-

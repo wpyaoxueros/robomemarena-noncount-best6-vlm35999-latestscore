@@ -2,8 +2,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EXP_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+EXP_ROOT="${EXP_ROOT:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
 REPO_ROOT="$(cd "${EXP_ROOT}/.." && pwd)"
+AUDIT_SCRIPT_DIR="${AUDIT_SCRIPT_DIR:-${EXP_ROOT}/scripts}"
 OPENPI_ROOT="${OPENPI_ROOT:-/data/user/hlei573/openpi}"
 OPENPI_INFERENCE_ROOT="${OPENPI_INFERENCE_ROOT:-/data/user/hlei573/openpi_inference}"
 VLA_PY="${VLA_PY:-${OPENPI_ROOT}/.venv/bin/python}"
@@ -52,8 +53,8 @@ for required in \
   fi
 done
 
-"${SCRIPT_DIR}/verify_source_snapshot.sh"
-"${SCRIPT_DIR}/audit_nohold_contract.sh"
+"${AUDIT_SCRIPT_DIR}/verify_source_snapshot.sh"
+"${AUDIT_SCRIPT_DIR}/audit_nohold_contract.sh"
 
 mkdir -p "${RUN_ROOT}/logs" "${RUN_ROOT}/hf_cache" "${RUN_ROOT}/libero_config"
 chmod 2775 "${RUN_ROOT}" "${RUN_ROOT}/logs" "${RUN_ROOT}/hf_cache" "${RUN_ROOT}/libero_config"
@@ -61,6 +62,27 @@ SERVER_LOG="${RUN_ROOT}/logs/vla_server.log"
 EVAL_LOG="${RUN_ROOT}/logs/evaluator.log"
 COMMAND_FILE="${RUN_ROOT}/formal_command.txt"
 MANIFEST="${RUN_ROOT}/run_manifest.json"
+
+"${EVAL_PY}" - "${RUN_ROOT}/libero_config/config.yaml" "${TARGET_LIBERO_PATH}" <<'PY'
+import pathlib
+import sys
+
+config_path = pathlib.Path(sys.argv[1])
+root = pathlib.Path(sys.argv[2]).resolve()
+datasets = root.parent / "datasets"
+datasets.mkdir(parents=True, exist_ok=True)
+values = {
+    "assets": root / "assets",
+    "bddl_files": root / "bddl_files",
+    "benchmark_root": root,
+    "datasets": datasets,
+    "init_states": root / "init_files",
+}
+config_path.write_text(
+    "".join(f"{key}: {value}\n" for key, value in values.items()),
+    encoding="utf-8",
+)
+PY
 
 export PYTHONNOUSERSITE=1
 export TRANSFORMERS_NO_TF=1
@@ -77,6 +99,7 @@ export LIBERO_CONFIG_PATH="${RUN_ROOT}/libero_config"
 export HF_HOME="${RUN_ROOT}/hf_cache"
 
 SOURCE_COMMIT="$(git -C "${REPO_ROOT}" rev-parse HEAD)"
+RUNNER_SHA256="$(sha256sum "${BASH_SOURCE[0]}" | awk '{print $1}')"
 NORM_SHA256="$(sha256sum "${VLA_CHECKPOINT}/assets/robomemarena_fullvlm_v2_noflip_dataset_v2/norm_stats.json" | awk '{print $1}')"
 ADAPTER_SHA256="$(sha256sum "${VLM_ADAPTER}/adapter_model.safetensors" | awk '{print $1}')"
 SLURM_JOB_RECORD="$(scontrol show job -o "${SLURM_JOB_ID}")"
@@ -108,6 +131,8 @@ payload = {
     "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
     "nvidia_smi_gpu_list": subprocess.check_output(["nvidia-smi", "-L"], text=True).splitlines(),
     "producer_commit": "${SOURCE_COMMIT}",
+    "frozen_runner": "${BASH_SOURCE[0]}",
+    "frozen_runner_sha256": "${RUNNER_SHA256}",
     "task": 1,
     "seed": 104,
     "control_contract": "synchronous VLM prompt -> VLA actions; no hold/release/anchor/oracle/GT replay",

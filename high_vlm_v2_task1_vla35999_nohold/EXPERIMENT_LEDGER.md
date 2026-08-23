@@ -131,5 +131,7 @@
 - Task4 required stages: official stages 01-08; official `09_Close_Top_Drawer_Final` remains optional and is omitted from required success.
 - Control path: the unchanged high-vlm-v2 model emits each primitive prompt and VLA35999 emits every action. The adapter does not synthesize prompts or actions and registers no handoff window for these extension tasks.
 - Validation: `5 passed` in `tests/test_task234_physical_extension.py`; all shell scripts pass syntax checks; source snapshot comparison reports all 18 files `SAME`; static no-hold audit reports `PASS`; adapter CLI loads successfully.
+- Permission preflight failure: `prepare_shared_permissions.sh` attempted to chmod historical probe directories owned by `hzhang061`, producing `Operation not permitted`; the experiment's `records/` and `runs/` roots remained group-writable `irpn` setgid directories.
+- Correction: the helper now changes only entries owned by its invoking Unix user. Direct validation from the `hzhang061` shell reported `RECORDS_WRITE_OK`, `RUNS_WRITE_OK`, `EXTENSION_READ_OK`, and `NORM_READ_OK`.
 - Initial request: Task2/3/4, seed104, one autonomous episode each, launched independently in parallel. Every task must pass a fresh one-GPU probe and a fresh two-GPU formal-shape probe in its own `hzhang061` shell chain before formal execution.
 - Request receipt: `records/run_request_task234_seed104_20260824_032523.md`.

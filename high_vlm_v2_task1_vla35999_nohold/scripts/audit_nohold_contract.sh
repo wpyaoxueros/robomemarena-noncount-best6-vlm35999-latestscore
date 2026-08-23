@@ -4,7 +4,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXP_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 EVALUATOR="${EXP_ROOT}/source/vlm_ft/eval_three_tasks.py"
-RUNNER="${EXP_ROOT}/scripts/run_task1_seed104_nohold_inside_allocation.sh"
+RUNNER="${RUNNER:-${EXP_ROOT}/scripts/run_task1_seed104_nohold_inside_allocation.sh}"
+EXTENSION="${EXTENSION:-}"
+AUDIT_FILES=("${EVALUATOR}" "${RUNNER}")
+if [[ -n "${EXTENSION}" ]]; then
+  AUDIT_FILES+=("${EXTENSION}")
+fi
 
 for forbidden in \
   'ORACLE_(HOLD|FORCE|STAGE|PROMPT|NEXT)' \
@@ -14,7 +19,7 @@ for forbidden in \
   'REQUIRE_FORWARD' \
   'hold_steps' \
   'auto_release'; do
-  if grep -En "${forbidden}" "${EVALUATOR}" "${RUNNER}"; then
+  if grep -En "${forbidden}" "${AUDIT_FILES[@]}"; then
     echo "forbidden control mechanism found: ${forbidden}" >&2
     exit 1
   fi

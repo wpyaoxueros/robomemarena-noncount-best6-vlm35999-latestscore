@@ -117,3 +117,19 @@
 - Interim aggregate: `1/4` success. The three failures completed `pick cookies` and `place cookies into basket`, then failed to complete `pick tomato sauce` before max steps.
 - Invalid allocation attempts: launches that ended before a formal episode produced no summary and do not enter the aggregate. Their launcher/probe logs remain under `records/launcher_logs/` and `records/probes/`.
 - Repeat-2 retry 2 gates: one-GPU Job `538041` passed on `ACD1-4`; two-GPU shape Job `538042` passed on `ACD1-31`; formal Job `538043` started on `acd_u`, node `ACD1-31`, two H100 GPUs.
+
+## 2026-08-24 Task2/3/4 physical no-hold extension
+
+- Status: `IMPLEMENTED_VALIDATED_LAUNCH_PENDING`.
+- Purpose: evaluate Tasks 2, 3, and 4 with the same high-vlm-v2 adapter and VLA checkpoint 35999 used by the Task1 line, without hold, release, anchor, oracle prompt injection, or GT replay.
+- Source boundary: `source/` remains byte-identical to `/data/user/jwen341/openpi_rm`; task support is installed by the external adapter `extensions/eval_task234_physical.py`.
+- Official source: tracked RoboMemArena snapshot commit `d9f83ac5182e25ad7f0a301a77a0b667f2392df1`.
+- Official scorer: `official_snapshot/evaluation_benchmark/scripts/task2_26_reference_stage.py`, SHA-256 `0ab5e19cb7b90844b86fe04a76facc0364af55f1e841c4754aa675404a318538`.
+- Official BDDL: exactly one tracked file for each of Tasks 2, 3, and 4; missing or ambiguous BDDL and scorer hash mismatch are hard failures.
+- Task2 required stages: `01_Place_Butter_Basket`, `02_Place_Popcorn_Basket`.
+- Task3 required stages: `01_Place_Cream_Basket`, `02_Place_Pudding_Basket`.
+- Task4 required stages: official stages 01-08; official `09_Close_Top_Drawer_Final` remains optional and is omitted from required success.
+- Control path: the unchanged high-vlm-v2 model emits each primitive prompt and VLA35999 emits every action. The adapter does not synthesize prompts or actions and registers no handoff window for these extension tasks.
+- Validation: `5 passed` in `tests/test_task234_physical_extension.py`; all shell scripts pass syntax checks; source snapshot comparison reports all 18 files `SAME`; static no-hold audit reports `PASS`; adapter CLI loads successfully.
+- Initial request: Task2/3/4, seed104, one autonomous episode each, launched independently in parallel. Every task must pass a fresh one-GPU probe and a fresh two-GPU formal-shape probe in its own `hzhang061` shell chain before formal execution.
+- Request receipt: `records/run_request_task234_seed104_20260824_032523.md`.

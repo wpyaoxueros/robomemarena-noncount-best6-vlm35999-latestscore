@@ -166,3 +166,12 @@
 - Reproducibility review: the first launcher wiring would have executed the tracked but live adapter path. Before launch, this was corrected so every request copies the selected adapter next to the frozen probe and runner, hashes all three in `SHA256SUMS`, executes the frozen adapter, passes the committed experiment root through `HV2_EXP_ROOT`, and records `selected_evaluator_sha256` in the manifest.
 - Design: `../docs/superpowers/specs/2026-08-24-high-vlm-v2-two-call-prompt-commit-design.md`.
 - Plan: `../docs/superpowers/plans/2026-08-24-high-vlm-v2-two-call-prompt-commit.md`.
+
+### Formal launch request
+
+- Status: `LAUNCHING`.
+- Producer commit: `ff7b3c3a94df6e4d92ceb2b92263bbf39508ec21`.
+- Scope: Task1, seed104, one autonomous episode, VLA35999 actions, high-vlm-v2 prompt planning, and two consecutive fresh predictions required for each post-initial controller prompt change.
+- Control exclusions: no hold, release, anchor, oracle prompt injection, stage/order gate, or GT replay.
+- Borrowed-account preflight: verified `whoami=hzhang061`, host `ACD-Manage-3`, adapter read access, and write access to `records/` and `runs/`.
+- Launch gate: fresh one-GPU probe, fresh two-GPU shape probe, then two-GPU formal evaluation from the same borrowed-account shell.

@@ -151,6 +151,7 @@
 - Initial autonomous prompts: Task2 `pick butter` at progress `0.05185`; Task3 `pick cream` at progress `0.06657`; Task4 `place butter into top drawer` at progress `0.05749`. These are raw VLM outputs and are not corrected by the extension.
 - Terminal state: Task2 Job `538177`, Task3 Job `538181`, and Task4 Job `538180` all exited `134` in MuJoCo/robosuite `binding_utils.read_pixels` during `env.step` on `ACD1-8`.
 - Each attempt reached step `250` with `51` VLM calls and no completed physical stage. The three summary files have headers only and no complete MP4 exists; these are invalid runtime attempts and are excluded from success-rate denominators.
+- Recurrence lesson: the repository previously preserved diagnosis and invalid-run handling, but no verified fix. The required evidence and 300-step smoke gate are now frozen in `docs/NATIVE_RENDER_ABORT_LESSON.md`; multi-task expansion is blocked until that gate passes.
 
 ## 2026-08-24 Task1 two-call controller prompt confirmation
 

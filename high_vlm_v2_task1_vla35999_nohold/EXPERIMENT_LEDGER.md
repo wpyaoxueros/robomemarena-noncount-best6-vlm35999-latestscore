@@ -63,3 +63,13 @@
 - Termination: evaluator exited by `SIGABRT` and Slurm Job `537544` ended `FAILED`, exit `2:0`. This episode is invalid and is not scored as success or failure.
 - Parent-shell defect: the shared runner was updated while the running shell still referenced it, so after the child abort the shell read shifted source lines and emitted spurious `command not found` errors. This did not produce a scientific result but made cleanup non-reproducible.
 - Correction: each launch now snapshots the probe and formal runner before any Slurm request; the manifest records the frozen runner path and SHA-256. A running job's script is never edited in place.
+
+#### Frozen-runner retry Job 537682
+
+- Fresh gates: one-GPU Job `537680` on `ACD1-1`, then one-node/two-GPU Job `537681` on `ACD1-11`; both passed.
+- Formal run: Job `537682`, `hzhang061`, account `hzhang061`, partition `acd_u`, node `ACD1-11`, producer commit `2746740`.
+- Frozen runner: SHA-256 `87beaf3cb9f2b1c20b58008d9592bdc9ea786e5f88b6d4a71965bbbe7ea44342`.
+- Partial rollout: `pick cookies` completed at `t=127`; VLM independently selected place at `t=145`, regressed to pick at `t=150`, then switched to and retained `place cookies into basket` at `t=200`.
+- Termination: reached `t=250`, then evaluator exited by `SIGABRT`, exit code `134`. The manifest closed correctly as `FAILED`; no episode summary or MP4 exists, so this is an invalid result.
+- Updated hypothesis: two native aborts occurred near step 250 / VLM call 50 while the object remained grasped above the basket. The frozen retry rules out live launcher editing as the evaluator-abort cause.
+- Next isolation: same VLM/environment/image-saving path for 300 steps with original HDF actions and no VLA server. This is a runtime diagnostic only, not an evaluation result.

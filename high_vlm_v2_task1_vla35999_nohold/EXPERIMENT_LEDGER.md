@@ -188,3 +188,16 @@
 - Native failure: the evaluator aborted with exit `134` in MuJoCo/robosuite `binding_utils.read_pixels` during `env.step`. The websocket VLA server remained available and logged no policy-model exception.
 - Scientific validity: no episode row was appended to `summary.tsv`, no finalized video exists, and the attempt is excluded rather than scored `0/1`.
 - Evidence SHA-256: `logs/evaluator.log` `f076027b21b3a330fd634867ab655a1b43216c9c1a1341762ab0a1fd3b0fb1e6`; `eval/task1/ep000/sync_vlm.log` `e5927a81a58ef5d40d9e841512fab0f27a293b6abfba4a87a80007ec38fae4a3`; `run_manifest.json` `d3bc00a898e7ed4cb5fe70784523acd60c4722a242bb8d8a2f8678311d76fa38`.
+
+## 2026-08-24 Task1-26 cc156e5 physical adapter
+
+- Status: `IMPLEMENTED_CPU_VALIDATED`; no GPU result is claimed yet.
+- Design: `../docs/superpowers/specs/2026-08-24-high-vlm-v2-all26-physical-eval-design.md`.
+- Plan: `../docs/superpowers/plans/2026-08-24-high-vlm-v2-all26-physical-eval.md`.
+- Upstream source: RoboMemArena `main` commit `cc156e519990ae43cf3b64281a548724f428fbbd`, observed through the configured SOCKS5 GitHub proxy.
+- New append-only snapshot: `official_snapshot_cc156e5/`; its 31 original files plus two direct runtime dependencies pass their recorded SHA-256 checks and are byte-identical to the upstream checkout.
+- Official scorer: `task2_26_reference_stage.py` SHA-256 `4eb949049b3175df01e8c632a6159a4b65bf9e2a667f6cbe612132ba5e7e0b99`. Counting Tasks 6/7/8/9/10/15/16/22 use upstream `SharedPourCounter` rather than the historical tilt fallback.
+- Adapter: `extensions/eval_all26_physical_two_call.py`; physical stages and BDDL resolution are registered for Task1-26, upstream-declared optional drawer final stages are omitted from required success, and unsupported physical handoff metrics return no windows.
+- Prompt control: the adapter composes `eval_two_call_prompt_commit.py`; the initial prompt remains immediate and later changes require two consecutive fresh VLM predictions. Stage predicates never synthesize a prompt.
+- CPU validation: `18 passed` in `test_all26_physical_extension.py`, `test_task234_physical_extension.py`, and `test_two_call_prompt_commit.py`; `py_compile`, snapshot SHA verification, copied-source equality, and no-hold/no-oracle audit all pass.
+- Login-node integration note: direct full evaluator `--help` imports did not finish before the command wrapper yielded and left three loading processes. Those exact agent-created PIDs were terminated. No user or Slurm process was changed; model/CLI import must be verified inside the formal GPU smoke allocation.

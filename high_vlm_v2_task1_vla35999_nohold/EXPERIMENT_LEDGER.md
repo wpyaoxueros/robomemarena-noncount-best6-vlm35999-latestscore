@@ -206,3 +206,4 @@
 - Account launcher: `scripts/launch_all26_one_ep_account.sh` snapshots all executable files, runs fresh one-GPU and two-GPU shape probes in the required partition order, passes no explicit Slurm account, and records partition/account/job/GPU identities in the run manifest.
 - Default scheduling exclusion: `ACD1-8,ACD1-11,ACD1-31,ACD1-54`, based only on this experiment's observed native render aborts. Invalid attempts remain preserved and never enter model denominators.
 - Validation after launcher wiring: all Python extension tests pass, both shell scripts pass `bash -n`, source equality passes, snapshot hashes pass, and the no-hold/no-oracle audit passes against the new formal runner and adapter.
+- Physical smoke request: `records/run_request_all26_smoke_task1_seed104_20260824_100334.md`; Task1 seed104, `MAX_STEPS=300`, producer commit `6c24ef4`, Unix user `hzhang061`, and required fresh one-GPU/two-GPU probe gates before formal launch.

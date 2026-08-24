@@ -207,3 +207,12 @@
 - Default scheduling exclusion: `ACD1-8,ACD1-11,ACD1-31,ACD1-54`, based only on this experiment's observed native render aborts. Invalid attempts remain preserved and never enter model denominators.
 - Validation after launcher wiring: all Python extension tests pass, both shell scripts pass `bash -n`, source equality passes, snapshot hashes pass, and the no-hold/no-oracle audit passes against the new formal runner and adapter.
 - Physical smoke request: `records/run_request_all26_smoke_task1_seed104_20260824_100334.md`; Task1 seed104, `MAX_STEPS=300`, producer commit `6c24ef4`, Unix user `hzhang061`, and required fresh one-GPU/two-GPU probe gates before formal launch.
+
+### Task1 300-step physical smoke terminal result
+
+- Probe chain: one-GPU Job `539161` passed on `acd_u`; two-GPU request-shape Job `539163` passed on `acd_ue`. Both ran as Unix user/account `hzhang061` on `ACD1-13`.
+- Formal allocation: Job `539164`, `acd_ue`, `ACD1-13`, two H100 80GB GPUs, terminal state `COMPLETED`, exit `0:0`.
+- Runtime validation: VLA35999 loaded its checkpoint-local norm, high-vlm-v2 loaded 750/750 weights, and the physical rollout completed 300 requested steps without the prior step-250 native abort.
+- Controller validation: matching VLM calls at t=0/5 committed `pick cookies`; matching calls at t=250/255 committed `place cookies into basket`. No prompt was synthesized by a stage predicate.
+- Model score at the intentionally short cap: `task_success=0`, `semantic_progress=0`, `failure_reason=max_steps`. This row is smoke-only and excluded from the formal Task1 and all-26 denominators.
+- Receipt: `records/results/all26_smoke_task1_seed104_20260824_100334.md`.

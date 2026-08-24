@@ -14,6 +14,7 @@ from extensions.eval_all26_physical_two_call import (
     OFFICIAL_SCORER_SHA256,
     install_extension,
     install_physical_extension,
+    load_two_call_installer,
     load_official_scorer,
     required_official_stage_specs,
     verify_bddl_dir,
@@ -145,3 +146,18 @@ def test_composed_install_adds_two_call_controller(tmp_path: Path) -> None:
     )
 
     assert calls == [2]
+
+
+def test_two_call_installer_can_load_from_frozen_path(tmp_path: Path) -> None:
+    module_path = tmp_path / "frozen_two_call.py"
+    module_path.write_text(
+        "def install_extension(runner, required_calls):\n"
+        "    runner.loaded_required_calls = required_calls\n",
+        encoding="utf-8",
+    )
+    runner = SimpleNamespace()
+
+    installer = load_two_call_installer(module_path)
+    installer(runner, required_calls=2)
+
+    assert runner.loaded_required_calls == 2

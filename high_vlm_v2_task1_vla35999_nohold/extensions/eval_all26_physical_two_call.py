@@ -244,6 +244,14 @@ def install_physical_extension(
     return scorer
 
 
+def load_two_call_installer(path: Path) -> Callable[..., Any]:
+    module = _load_canonical_module("all26_frozen_two_call_prompt_commit", path.resolve())
+    installer = getattr(module, "install_extension", None)
+    if not callable(installer):
+        raise RuntimeError(f"Frozen two-call module has no callable install_extension: {path}")
+    return installer
+
+
 def install_extension(
     runner: Any,
     *,
@@ -264,9 +272,13 @@ def install_extension(
         legal_primitives=legal_primitives,
     )
     if two_call_installer is None:
-        if str(EXP_ROOT) not in sys.path:
-            sys.path.insert(0, str(EXP_ROOT))
-        from extensions.eval_two_call_prompt_commit import install_extension as two_call_installer
+        frozen_path = os.environ.get("TWO_CALL_EXTENSION_PATH", "").strip()
+        if frozen_path:
+            two_call_installer = load_two_call_installer(Path(frozen_path))
+        else:
+            if str(EXP_ROOT) not in sys.path:
+                sys.path.insert(0, str(EXP_ROOT))
+            from extensions.eval_two_call_prompt_commit import install_extension as two_call_installer
     two_call_installer(runner, required_calls=int(required_calls))
     return scorer
 

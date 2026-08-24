@@ -216,3 +216,13 @@
 - Controller validation: matching VLM calls at t=0/5 committed `pick cookies`; matching calls at t=250/255 committed `place cookies into basket`. No prompt was synthesized by a stage predicate.
 - Model score at the intentionally short cap: `task_success=0`, `semantic_progress=0`, `failure_reason=max_steps`. This row is smoke-only and excluded from the formal Task1 and all-26 denominators.
 - Receipt: `records/results/all26_smoke_task1_seed104_20260824_100334.md`.
+
+### All-26 resumable scheduler and borrowed-account output boundary
+
+- Scheduler: `scripts/schedule_all26_one_ep.py`; one global assignment manifest must contain Task1-26 exactly once and supplies each account's disjoint tasks, slot count, and account-private output root.
+- Validity rule: exactly one `eval/summary.tsv` data row closes a task only when row task/seed/episode and manifest task/seed/run ID all match the request, independent of `task_success`. A missing/header-only/mismatched summary is invalid and triggers a new attempt with the observed node excluded.
+- Audit state: append-only `events.jsonl` records scheduler/contract/launcher/assignment hashes, task/attempt/run ID, exclusions, return code, node, and launcher/probe/summary/manifest paths and hashes. Account-level `fcntl` locking blocks competing schedulers; `contract.json` prevents changed-configuration resume; `status.tsv` includes resumed valid results.
+- Shared-output preflight: real `touch` tests from `xiangqim` and `prtroas0003` failed under the package's `records/` and `runs/`. The mount stores a `system.nfs4_acl` that explicitly names older accounts; POSIX `chmod` does not override it and `setfacl` returns `Operation not supported`.
+- Resolution: code and scoring remain in this Git package, while each submitting account writes generated runs, probes, launcher logs, and scheduler state below `/data/user/<account>/hlei573_borrow_outputs/<batch>`. All three accounts created test artifacts there and `hlei573` read them successfully.
+- Validation: `32 passed` across scheduler, all-task, Task234, and two-call tests; Python compilation, shell syntax, snapshot hashes, and no-hold audit pass.
+- Safety follow-up: a summary closes an attempt only with request bindings plus `task_success` in `{0,1}`; formal allocation waits at most 120 seconds; an early allocation identity preserves the formal hostname before later validation; concurrent tasks share newly excluded nodes within an account; and the scheduler always validates the actual `whoami` result.

@@ -19,20 +19,23 @@ VLM_BASE="${VLM_BASE:-/data/user/jwen341/model_lib/Qwen3-VL-8B-Instruct}"
 TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH:-${EXP_ROOT}/runtime_assets/libero_fork/libero}"
 EVAL_PY="${EVAL_PY:-/data/user/hlei573/openpi_inference/.venv/bin/python}"
 RUN_ID="${RUN_ID:-task${TASK_ID}_seed${SEED}_highvlmv2_cc156e5_$(date +%Y%m%d_%H%M%S)}"
-LAUNCH_LOG_DIR="${EXP_ROOT}/records/launcher_logs"
-PROBE_DIR="${EXP_ROOT}/records/probes/${RUN_ID}"
+RUNS_ROOT="${RUNS_ROOT:-${EXP_ROOT}/runs}"
+LAUNCH_LOG_DIR="${LAUNCH_LOG_DIR:-${EXP_ROOT}/records/launcher_logs}"
+PROBE_BASE_DIR="${PROBE_BASE_DIR:-${EXP_ROOT}/records/probes}"
+PROBE_DIR="${PROBE_BASE_DIR}/${RUN_ID}"
 LAUNCH_LOG="${LAUNCH_LOG_DIR}/${RUN_ID}.log"
 
 if [[ "$(whoami)" != "${EXPECTED_UNIX_USER}" ]]; then
   echo "launch expected ${EXPECTED_UNIX_USER}, got $(whoami)" >&2
   exit 1
 fi
-if [[ ! -w "${EXP_ROOT}/records" || ! -w "${EXP_ROOT}/runs" ]]; then
-  echo "shared experiment outputs are not writable by $(whoami)" >&2
-  exit 1
-fi
-
-mkdir -p "${LAUNCH_LOG_DIR}" "${PROBE_DIR}"
+mkdir -p "${LAUNCH_LOG_DIR}" "${PROBE_DIR}" "${RUNS_ROOT}"
+for writable_dir in "${LAUNCH_LOG_DIR}" "${PROBE_DIR}" "${RUNS_ROOT}"; do
+  if [[ ! -w "${writable_dir}" ]]; then
+    echo "output directory is not writable by $(whoami): ${writable_dir}" >&2
+    exit 1
+  fi
+done
 FROZEN_SCRIPT_DIR="${PROBE_DIR}/frozen_scripts"
 mkdir -p "${FROZEN_SCRIPT_DIR}"
 cp "${SCRIPT_DIR}/probe_gpu_environment.sh" "${FROZEN_SCRIPT_DIR}/probe_gpu_environment.sh"
@@ -64,6 +67,7 @@ printf 'exclude_nodes=%s\n' "${EXCLUDE_NODES}"
 printf 'run_id=%s\n' "${RUN_ID}"
 
 export EXP_ROOT VLA_CHECKPOINT VLM_ADAPTER VLM_BASE TARGET_LIBERO_PATH EVAL_PY
+export RUNS_ROOT
 export PYTHONNOUSERSITE=1
 
 PARTITIONS=(acd_u acd_ue emergency_acd)
@@ -130,6 +134,7 @@ FORMAL_PARTITION="${SELECTED_PARTITION}"
 
 echo "formal request partition=${FORMAL_PARTITION} task=${TASK_ID} seed=${SEED}"
 srun \
+  --immediate=120 \
   --partition="${FORMAL_PARTITION}" \
   --nodes=1 \
   --ntasks=1 \
@@ -142,6 +147,7 @@ srun \
   bash -lc 'exec "$@"' bash \
   env TASK_ID="${TASK_ID}" RUN_ID="${RUN_ID}" VLA_CHECKPOINT="${VLA_CHECKPOINT}" \
     SEED="${SEED}" MAX_STEPS="${MAX_STEPS}" EXPECTED_UNIX_USER="${EXPECTED_UNIX_USER}" \
+    RUNS_ROOT="${RUNS_ROOT}" \
     VLM_ADAPTER="${VLM_ADAPTER}" VLM_BASE="${VLM_BASE}" \
     TARGET_LIBERO_PATH="${TARGET_LIBERO_PATH}" EVAL_PY="${EVAL_PY}" \
     EVALUATOR="${FROZEN_EVALUATOR}" TWO_CALL_EXTENSION="${FROZEN_TWO_CALL}" \

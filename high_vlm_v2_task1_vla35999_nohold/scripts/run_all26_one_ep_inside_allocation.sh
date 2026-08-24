@@ -33,8 +33,30 @@ OFFICIAL_SCORER_SHA256="4eb949049b3175df01e8c632a6159a4b65bf9e2a667f6cbe612132ba
 OFFICIAL_BDDL_DIR="${EXP_ROOT}/official_snapshot_cc156e5/evaluation_benchmark/bddl"
 OFFICIAL_SHA256SUMS="${EXP_ROOT}/official_snapshot_cc156e5/SHA256SUMS"
 RUN_ID="${RUN_ID:-task${TASK_ID}_seed${SEED}_highvlmv2_cc156e5_$(date +%Y%m%d_%H%M%S)}"
-RUN_ROOT="${EXP_ROOT}/runs/${RUN_ID}"
+RUNS_ROOT="${RUNS_ROOT:-${EXP_ROOT}/runs}"
+RUN_ROOT="${RUNS_ROOT}/${RUN_ID}"
 PORT="${PORT:-$((18000 + ${SLURM_JOB_ID:-0} % 20000))}"
+
+mkdir -p "${RUN_ROOT}"
+python3 - "${RUN_ROOT}/allocation_identity.json" "${TASK_ID}" "${SEED}" "${RUN_ID}" <<'PY'
+import json
+import os
+import pathlib
+import socket
+import sys
+
+path = pathlib.Path(sys.argv[1])
+temporary = path.with_suffix(".tmp")
+payload = {
+    "hostname": socket.gethostname(),
+    "run_id": sys.argv[4],
+    "seed": int(sys.argv[3]),
+    "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+    "task": int(sys.argv[2]),
+}
+temporary.write_text(json.dumps(payload, sort_keys=True) + "\n", encoding="utf-8")
+temporary.replace(path)
+PY
 
 if [[ "$(whoami)" != "${EXPECTED_UNIX_USER}" ]]; then
   echo "formal runner expected ${EXPECTED_UNIX_USER}, got $(whoami)" >&2
@@ -172,6 +194,8 @@ payload = {
     "cuda_visible_devices": os.environ.get("CUDA_VISIBLE_DEVICES"),
     "nvidia_smi_gpu_list": subprocess.check_output(["nvidia-smi", "-L"], text=True).splitlines(),
     "producer_commit": "${SOURCE_COMMIT}",
+    "run_id": "${RUN_ID}",
+    "runs_root": "${RUNS_ROOT}",
     "frozen_runner": "${BASH_SOURCE[0]}",
     "frozen_runner_sha256": "${RUNNER_SHA256}",
     "frozen_extension": "${EVALUATOR}",
